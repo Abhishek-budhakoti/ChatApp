@@ -4,7 +4,7 @@ import { db } from './firbase'
 
 export const useUserStore = create((set) => ({
 	currentUser: null,
-	isLoading: false,
+	isLoading: true,
 	fetchUserInfo: async (uid) => {
 		if (!uid) {
 			return set({ currentUser: null, isLoading: false })
@@ -18,7 +18,7 @@ export const useUserStore = create((set) => ({
 				set({ currentUser: null, isLoading: false })
 			}
 		} catch (error) {
-			set({ currentUser: null, isLoading: false })
+			return set({ currentUser: null, isLoading: false })
 		}
 	},
 }))

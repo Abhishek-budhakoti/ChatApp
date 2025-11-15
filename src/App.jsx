@@ -5,8 +5,8 @@ import Detail from "./components/detail/detail";
 import Login from "./components/login/login";
 import Notification from "./components/notification/notification";
 import { onAuthStateChanged } from "firebase/auth";
-import { useUserStore } from "./lib/userStore"; // ✅ make sure this path exists
-import { useChatStore } from "./lib/chatStore"; // ✅ added missing import
+import { useUserStore } from "./lib/userStore"; 
+import { useChatStore } from "./lib/chatStore";
 import { auth } from "./lib/firbase";
 
 export const App = () => {

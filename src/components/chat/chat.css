@@ -175,10 +175,15 @@
             padding: 4px 15px;
             border: none;
             color: aliceblue;
-            background-color: rgb(35, 69, 137);
+            background-color: rgb(29, 71, 154);
             border-radius: 5px;
             font-size: small;
             cursor: pointer;
+
+            &:disabled {
+                background-color: rgb(108, 57, 3);
+                cursor: not-allowed;
+            }
 
 
         }

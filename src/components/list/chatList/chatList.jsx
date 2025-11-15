@@ -11,6 +11,8 @@ const ChatList = () => {
   const [chats, setChats] = useState([]);
   const [addMode, setAddMode] = useState(false);
 
+  const [input, setInput] = useState("");
+
   const { currentUser } = useUserStore();
   const { changeChat } = useChatStore();
 
@@ -71,6 +73,9 @@ const ChatList = () => {
     }
   };
 
+
+  const filteredChats = chats.filter((chat) => chat.user?.username.toLowerCase().includes(input.toLowerCase()));
+
   const Icon = addMode ? FaMinus : FaPlus;
 
   return (
@@ -79,22 +84,22 @@ const ChatList = () => {
       <div className="search">
         <div className="searchBar">
           <FaSearch />
-          <input type="text" placeholder="Search" />
+          <input type="text" placeholder="Search"  onChange={(e) => setInput(e.target.value)}/>
         </div>
         <Icon className="add" onClick={() => setAddMode((prev) => !prev)} />
       </div>
 
       {/* Chats */}
-      {chats.map((chat) => (
+      {filteredChats.map((chat) => (
         <div
           className="items"
           key={chat.chatId}
           onClick={() => handleSelect(chat)}
           style={{ backgroundColor: chat?.isSeen ? "transparent" : "#cf7c235a" }}
         >
-          <img src={chat.user?.avatar || "./avtar.png"} alt="avatar" />
+          <img src={chat.user.blocked.includes(currentUser.uid) ? "./avtar.png" : chat.user?.avatar || "./avtar.png"} alt="avatar" />
           <div className="text">
-            <span>{chat.user?.username || "Unknown User"}</span>
+            <span>{chat.user.blocked.includes(currentUser.uid) ? "Blocked User" : chat.user?.username || "Unknown User" }</span>
             <p>{chat.lastMessage || ""}</p>
           </div>
         </div>

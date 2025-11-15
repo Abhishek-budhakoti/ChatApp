@@ -12,11 +12,11 @@ import { useUserStore } from "../../lib/userStore";
 
 const Chat = () => {
   const [chat, setChat] = useState();
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
 
   const { currentUser } = useUserStore();
-  const { chatId, user } = useChatStore();
+  const { chatId, user, isCurrentUserBlocked, isReceiverBlocked } = useChatStore();
 
   const endRef = useRef(null);
 
@@ -69,7 +69,7 @@ const Chat = () => {
           if (chatIndex !== -1) {
             // Update existing chat
             chats[chatIndex].lastMessage = text;
-            chats[chatIndex].isSeen = id === currentUser.uid;
+            chats[chatIndex].isSeen = id === currentUser.uid ? true : false;
             chats[chatIndex].updatedAt = Date.now();
           } else {
             // Create new chat entry
@@ -138,10 +138,11 @@ const Chat = () => {
         </div>
         <input
           type="text"
-          placeholder="Type a message..."
+          placeholder=  {isCurrentUserBlocked || isReceiverBlocked  ? "You cannot type a message" : "Type a message..."}
           value={text}
           onChange={(e) => setText(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSend()}
+          disabled={isCurrentUserBlocked || isReceiverBlocked}
         />
         <div className="emoji">
           <MdEmojiEmotions onClick={() => setOpen((prev) => !prev)} />
@@ -151,7 +152,7 @@ const Chat = () => {
             </div>
           )}
         </div>
-        <button className="send-button" onClick={handleSend}>
+        <button className="send-button" onClick={handleSend} disabled={isCurrentUserBlocked || isReceiverBlocked}>
           Send
         </button>
       </div>
