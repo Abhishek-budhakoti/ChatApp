@@ -12,9 +12,11 @@ import {
   import { db } from "../../../../lib/firbase";
   import { useState } from "react";
   import { useUserStore } from "../../../../lib/userStore"; 
-  import { toast } from "react-toastify"; // ✅ import toast
+  import { toast } from "react-toastify"; 
+
+
   
-  const AddUser = () => {
+  const AddUser = ({ onClose }) => {
     const [user, setUser] = useState(null);
     const currentUser = useUserStore((state) => state.currentUser);
   
@@ -60,6 +62,7 @@ import {
         await setDoc(newChatRef, {
           createdAt: serverTimestamp(),
           messages: [],
+         
         });
   
         // 2️⃣ Update or create "userChats" for currentUser
@@ -75,6 +78,7 @@ import {
           },
           { merge: true }
         );
+        if (onClose) onClose();
   
         // 3️⃣ Update or create "userChats" for the other user
         const otherUserChatRef = doc(db, "userChats", user.id);

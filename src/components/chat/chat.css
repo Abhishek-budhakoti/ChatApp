@@ -1,18 +1,20 @@
 .chat {
     flex: 2;
-    border-left: 1px solid rgb(108, 57, 3);
-    border-right: 1px solid rgb(108, 57, 3);
+    border-left: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
     height: 100%;
     display: flex;
     flex-direction: column;
     min-width: 0;
 
     .top {
-        padding: 15px;
+        padding: 15px 20px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        border-bottom: 1px solid rgb(108, 57, 3);
+        border-bottom: 1px solid var(--border-color);
+        background-color: rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(10px);
 
 
         .user {
@@ -40,8 +42,7 @@
                 p {
                     font-size: 14px;
                     font-weight: 300;
-                    color:
-                        rgb(214, 215, 215);
+                    color: var(--text-secondary);
                 }
             }
         }
@@ -72,15 +73,16 @@
 
                 .text {
                     p {
-                        background-color: rgb(230, 186, 133);
-                        padding: 5px;
+                        background: var(--message-bg-own);
+                        padding: 10px 15px;
                         max-width: 250px;
-                        border-radius: 10px;
-                     
+                        border-radius: 18px 18px 4px 18px;
+                        color: white;
                         overflow-wrap: anywhere;
                         word-break: break-word;
                         white-space: pre-wrap;
                         hyphens: auto;
+                        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
                     }
                 }
 
@@ -110,14 +112,16 @@
                 gap: 5px;
 
                 p {
-                    padding: 10px;
-                    background-color: rgba(171, 96, 11, 0.29);
-                    border-radius: 10px;
+                    padding: 10px 15px;
+                    background-color: var(--message-bg-other);
+                    border-radius: 18px 18px 18px 4px;
                     max-width: 250px;
+                    color: var(--text-color);
                     overflow-wrap: anywhere;
                     word-break: break-word;
                     white-space: pre-wrap;
                     hyphens: auto;
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
                 }
 
             }
@@ -132,31 +136,49 @@
     }
 
     .bottom {
-        padding: 10px;
+        padding: 10px 10px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        border-top: 1px solid rgb(108, 57, 3);
-        gap: 10px;
-        margin-top: 20px;
+        border-top: 1px solid var(--border-color);
+        gap: 5px;
+        margin-top: auto;
+        background-color: rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(10px);
 
 
         .icons {
             display: flex;
-            gap: 10px;
+            gap: 2px;
             font-size: large;
+            color: var(--button-info-solid);
+            cursor: pointer;
 
+            svg {
+                transition: all 0.2s ease;
+                
+                &:hover {
+                    transform: scale(1.1);
+                    color: var(--button-primary-solid);
+                }
+            }
         }
 
         input {
             flex: 1;
-            background-color: rgb(108, 57, 3);
-            border: none;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
             outline: none;
-            color: white;
-            border-radius: 10px;
-            padding: 5px;
+            color: var(--text-color);
+            border-radius: 20px;
+            padding: 10px 5px;
             font-size: 15px;
+            transition: all 0.3s ease;
+
+            &:focus {
+                border-color: var(--button-info-solid);
+                box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+            }
         }
 
         .emoji {
@@ -172,17 +194,26 @@
         }
 
         .send-button {
-            padding: 4px 15px;
+            padding: 8px 20px;
             border: none;
-            color: aliceblue;
-            background-color: rgb(29, 71, 154);
-            border-radius: 5px;
+            color: white;
+            background: var(--button-info);
+            border-radius: 20px;
             font-size: small;
+            font-weight: 500;
             cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(79, 172, 254, 0.4);
+
+            &:hover:not(:disabled) {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 16px rgba(79, 172, 254, 0.5);
+            }
 
             &:disabled {
-                background-color: rgb(108, 57, 3);
+                background-color: var(--text-muted);
                 cursor: not-allowed;
+                box-shadow: none;
             }
 
 

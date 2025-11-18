@@ -1,5 +1,40 @@
 @import "tailwindcss";
 
+:root {
+    /* Static Color Variables - Modern Attractive Theme */
+    --bg-color: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --bg-color-solid: #667eea;
+    --text-color: #2d3748;
+    --message-bg-own: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --message-bg-own-solid: #667eea;
+    --message-bg-other: #f7fafc;
+    
+    /* Border Colors */
+    --border-color: rgba(102, 126, 234, 0.3);
+    
+    /* Input Colors */
+    --input-bg: rgba(255, 255, 255, 0.9);
+    --input-bg-alt: rgba(247, 250, 252, 0.95);
+    
+    /* Button Colors */
+    --button-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --button-primary-solid: #667eea;
+    --button-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --button-secondary-solid: #f5576c;
+    --button-danger: #e53e3e;
+    --button-info: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --button-info-solid: #4facfe;
+    --button-logout: #fc8181;
+    
+    /* Secondary Background Colors */
+    --search-bg: rgba(255, 255, 255, 0.95);
+    --modal-bg: rgba(255, 255, 255, 0.98);
+    --separator-bg: rgba(102, 126, 234, 0.2);
+    
+    /* Secondary Text Colors */
+    --text-secondary: #718096;
+    --text-muted: #a0aec0;
+}
 
 *{
     margin: 0;
@@ -11,28 +46,29 @@
 }
 body
 {
-    background-color: black;
+    background: var(--bg-color);
+    background-attachment: fixed;
     display: flex;
     align-items: center;
     justify-content: center; 
     height: 100vh;
-
-    color: white;
+    color: var(--text-color);
+    min-height: 100vh;
 }
 .container
 {
     display: flex;
     width: 180vh;
     height: 90vh;
-    background-color: rgba(223, 177, 117, 0.42);
-    backdrop-filter: blur(19px) saturate(180%);
-    border-radius:12px ;
-    border: 1px solid rgba(255, 255, 255, 0.153);
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px) saturate(180%);
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 20px 60px #667eea4d;
 }
 
 .loading{
-    padding: 50px;
+
     font-size: 36px;
-    border-radius: 10px;
-    background-color: rgb(72, 52, 7);
+   
 }

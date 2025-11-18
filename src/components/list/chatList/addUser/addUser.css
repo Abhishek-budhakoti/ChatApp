@@ -2,8 +2,11 @@
     width: max-content;
     height: max-content;
     padding: 20px;
-    background-color: rgba(13, 13, 13, 0.559);
+    background-color: var(--modal-bg);
     border-radius: 10px;
+    border: 1px solid var(--border-color);
+  
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
     position: absolute;
     top: 0;
     bottom: 0;
@@ -14,20 +17,34 @@
         display: flex;
         gap: 10px;
         input{
-            padding: 10px;
-            border-radius: 10px;
-            background-color: white;
-            color: black;
-            border: none;
+            padding: 12px 15px;
+            border-radius: 20px;
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
             outline: none;
+            transition: all 0.3s ease;
+
+            &:focus {
+                border-color: var(--button-primary-solid);
+                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            }
         }
         button{
-            padding: 10px;
-            border-radius: 10px;
-          color: white;
-          background-color: rgb(240, 146, 6);
-          cursor: pointer;
-          border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            color: white;
+            background: var(--button-primary);
+            cursor: pointer;
+            border: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+
+            &:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+            }
         }
     }
     .user{
@@ -49,13 +66,21 @@
         
         }
         button{
-            padding: 5px;
-            font-size:medium;
-            border-radius: 10px;
-          color: white;
-          background-color: rgb(240, 146, 6);
-          cursor: pointer;
-          border: none;
+            padding: 8px 16px;
+            font-size: medium;
+            border-radius: 20px;
+            color: white;
+            background: var(--button-primary);
+            cursor: pointer;
+            border: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+
+            &:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+            }
         }
 
 

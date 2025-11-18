@@ -49,7 +49,7 @@ const ChatList = () => {
   // ✅ Select chat & mark as seen
   const handleSelect = async (chat) => {
     try {
-      // Create a clean copy of chats without user object
+   
       const userChats = chats.map((item) => {
         const { user, ...rest } = item;
         return rest;
@@ -95,7 +95,7 @@ const ChatList = () => {
           className="items"
           key={chat.chatId}
           onClick={() => handleSelect(chat)}
-          style={{ backgroundColor: chat?.isSeen ? "transparent" : "#cf7c235a" }}
+          style={{ backgroundColor: chat?.isSeen ? "transparent" : "#667eea" }}
         >
           <img src={chat.user.blocked.includes(currentUser.uid) ? "./avtar.png" : chat.user?.avatar || "./avtar.png"} alt="avatar" />
           <div className="text">
@@ -106,7 +106,7 @@ const ChatList = () => {
       ))}
 
       {/* Add User Panel */}
-      {addMode && <AddUser />}
+      {addMode && <AddUser onClose={() => setAddMode(false)} />}
     </div>
   );
 };

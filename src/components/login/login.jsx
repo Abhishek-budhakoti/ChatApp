@@ -22,7 +22,7 @@ const Login =()=>
         const {email,password}= Object.fromEntries(formData);
         try{
             const cred = await signInWithEmailAndPassword(auth,email,password)
-            // Ensure a user profile exists in Firestore
+           
             const uid = cred.user?.uid
             if (uid) {
                 const userRef = doc(db, 'users', uid)
@@ -85,10 +85,10 @@ const Login =()=>
             </div>
             <div className="seprator"></div>
             <div className="item">
-            <h2>Create an Account</h2>
+            <h2>Create an account</h2>
                 <form onSubmit={handleRegister}>
                     <label htmlFor="file"> <img src={avtar.url||"./avtar.png"} alt="" />
-                     upload an image</label>
+                     Upload an image</label>
                    <input type="file" id="file" style={{display:'none'}} onChange={handleAvtar}/>
                     <input type="text" placeholder='Username' name='username'/>
                     <input type="email" placeholder='Email' name='email'/>
