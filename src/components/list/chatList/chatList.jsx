@@ -100,7 +100,7 @@ const ChatList = () => {
           <img src={chat.user.blocked.includes(currentUser.uid) ? "./avtar.png" : chat.user?.avatar || "./avtar.png"} alt="avatar" />
           <div className="text">
             <span>{chat.user.blocked.includes(currentUser.uid) ? "Blocked User" : chat.user?.username || "Unknown User" }</span>
-            <p>{chat.lastMessage || ""}</p>
+            <p>{chats.text || ""}</p>
           </div>
         </div>
       ))}

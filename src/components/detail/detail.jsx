@@ -4,6 +4,7 @@ import { signOut } from "firebase/auth";
 
 import { useChatStore } from "../../lib/chatStore";
 import { useUserStore } from "../../lib/userStore";
+import { IoIosLogOut } from "react-icons/io";
 
 import { 
     doc, 
@@ -42,10 +43,17 @@ const Detail = () => {
     return (
         <div className="detail">
             <div className="user">
-                <img src={user?.avatar || "./avatar.png"} alt="" />
+
+                <img src={user?.avatar || "./avtar.png"} alt="" />
                 <h2>{user?.username}</h2>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+              
+                <button className="logout" onClick={() => signOut(auth)}>
+                <IoIosLogOut />
+
+                </button>
+                <p>Lorem ipsum dolor sit amet ectetur adipisicing elit.</p>
             </div>
+           
 
             <div className="info">
                 <div className="options">
@@ -97,9 +105,7 @@ const Detail = () => {
                     :"Block User"}
                 </button>
 
-                <button className="logout" onClick={() => signOut(auth)}>
-                    Logout
-                </button>
+               
             </div>
         </div>
     );

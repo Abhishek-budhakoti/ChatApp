@@ -10,7 +10,7 @@ import { db } from "../../lib/firbase";
 import { useChatStore } from "../../lib/chatStore";
 import { useUserStore } from "../../lib/userStore";
 
-const Chat = () => {
+const Chat = ({ onToggleDetail }) => {
   const [chat, setChat] = useState();
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
@@ -95,7 +95,7 @@ const Chat = () => {
   return (
     <div className="chat">
       {/* Top Bar */}
-      <div className="top">
+      <div className="top" onClick={onToggleDetail} style={{ cursor: "pointer" }}>
         <div className="user">
           <img src={user?.avatar || "./avtar.png"} alt="avatar" />
           <div className="text">
@@ -104,11 +104,7 @@ const Chat = () => {
             </p>
           </div>
         </div>
-        <div className="icons">
-          <FaPhoneAlt />
-          <BsCameraVideoFill />
-          <FaInfoCircle />
-        </div>
+       
       </div>
 
       {/* Messages */}
@@ -131,11 +127,7 @@ const Chat = () => {
 
       {/* Bottom Input */}
       <div className="bottom">
-        <div className="icons">
-          <FaRegImage />
-          <IoIosCamera />
-          <FaMicrophone />
-        </div>
+     
         <input
           type="text"
           placeholder=  {isCurrentUserBlocked || isReceiverBlocked  ? "You cannot type a message" : "Type a message..."}

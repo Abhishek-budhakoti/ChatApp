@@ -8,13 +8,8 @@ const UserInfo = () => {
         <div className="userInfo">
             <div className="user">
                 <img src= {currentUser.avatar || "./avtar.png" }alt="" />
-                <h2>jhone doe</h2>
-            </div>
-            <div className="icons">
-                <BsThreeDots />
-                <BsCameraVideoFill />
-                <TbEdit />
-            </div>
+                <h2>{currentUser.username}</h2>
+            </div> 
         </div>
     )
 

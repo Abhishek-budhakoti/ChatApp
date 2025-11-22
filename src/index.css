@@ -2,10 +2,10 @@
 
 :root {
     /* Static Color Variables - Modern Attractive Theme */
-    --bg-color: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --bg-color:#3B82F6;
     --bg-color-solid: #667eea;
     --text-color: #2d3748;
-    --message-bg-own: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --message-bg-own:#3B82F6;
     --message-bg-own-solid: #667eea;
     --message-bg-other: #f7fafc;
     
@@ -17,14 +17,14 @@
     --input-bg-alt: rgba(247, 250, 252, 0.95);
     
     /* Button Colors */
-    --button-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --button-primary:#64748B ;
     --button-primary-solid: #667eea;
     --button-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
     --button-secondary-solid: #f5576c;
     --button-danger: #e53e3e;
-    --button-info: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --button-info: #1E3A8A;
     --button-info-solid: #4facfe;
-    --button-logout: #fc8181;
+  
     
     /* Secondary Background Colors */
     --search-bg: rgba(255, 255, 255, 0.95);
@@ -33,7 +33,7 @@
     
     /* Secondary Text Colors */
     --text-secondary: #718096;
-    --text-muted: #a0aec0;
+    --text-muted:#1E3A8A;
 }
 
 *{
@@ -70,5 +70,6 @@ body
 .loading{
 
     font-size: 36px;
+    color: white;
    
 }

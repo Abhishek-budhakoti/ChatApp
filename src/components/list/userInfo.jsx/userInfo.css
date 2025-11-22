@@ -4,17 +4,19 @@
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid var(--border-color);
-    background-color: var(--message-bg-own);
+   
     backdrop-filter: blur(10px);
     border-top-left-radius:12px;
     border-top-right-radius:12px;
     box-shadow: 0 0px 20px #667eea4d;
+
 
 }
 .user{
     display: flex;
     align-items: center;
     gap: 10px;
+   
 
     img{
         width:50px;
@@ -22,6 +24,10 @@
         border-radius: 50%;
         object-fit:cover;
     }
+   h2{
+    font-size: medium;
+    font-weight: 500;
+   }
 }
 .icons
 {
