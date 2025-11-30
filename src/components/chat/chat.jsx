@@ -1,12 +1,9 @@
 import "./chat.css";
 import Emojipicker from "emoji-picker-react";
-import { FaInfoCircle, FaPhoneAlt, FaRegImage, FaMicrophone } from "react-icons/fa";
-import { BsCameraVideoFill } from "react-icons/bs";
-import { IoIosCamera } from "react-icons/io";
 import { MdEmojiEmotions } from "react-icons/md";
 import { useEffect, useState, useRef } from "react";
 import { arrayUnion, doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
-import { db } from "../../lib/firbase";
+import { db, FIREBASE_COLLECTIONS, FIREBASE_FIELDS } from "../../lib/firbase";
 import { useChatStore } from "../../lib/chatStore";
 import { useUserStore } from "../../lib/userStore";
 
@@ -23,16 +20,45 @@ const Chat = ({ onToggleDetail }) => {
   // Auto-scroll to bottom
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [chat?.messages]);
+  }, [chat?.[FIREBASE_FIELDS.MESSAGES]]);
 
   // Listen to chat updates
   useEffect(() => {
     if (!chatId) return;
-    const unSub = onSnapshot(doc(db, "chats", chatId), (res) => {
-      setChat(res.data());
+    const unSub = onSnapshot(doc(db, FIREBASE_COLLECTIONS.CHATS, chatId), async (res) => {
+      const chatData = res.data();
+      setChat(chatData);
+      
+      // Update lastMessage in userChats when new messages arrive
+      if (chatData?.[FIREBASE_FIELDS.MESSAGES] && chatData[FIREBASE_FIELDS.MESSAGES].length > 0) {
+        const lastMessage = chatData[FIREBASE_FIELDS.MESSAGES][chatData[FIREBASE_FIELDS.MESSAGES].length - 1];
+        const userIds = [currentUser.uid, user.id];
+        
+        userIds.forEach(async (id) => {
+          try {
+            const userChatRef = doc(db, FIREBASE_COLLECTIONS.USER_CHATS, id);
+            const userChatsSnapshot = await getDoc(userChatRef);
+            
+            if (userChatsSnapshot.exists()) {
+              const userChatData = userChatsSnapshot.data();
+              const chats = userChatData[FIREBASE_FIELDS.CHATS] || [];
+              const chatIndex = chats.findIndex((c) => c[FIREBASE_FIELDS.CHAT_ID] === chatId);
+              
+              if (chatIndex !== -1) {
+                chats[chatIndex][FIREBASE_FIELDS.LAST_MESSAGE] = lastMessage[FIREBASE_FIELDS.TEXT];
+                chats[chatIndex][FIREBASE_FIELDS.IS_SEEN] = id === currentUser.uid ? true : chats[chatIndex][FIREBASE_FIELDS.IS_SEEN];
+                chats[chatIndex][FIREBASE_FIELDS.UPDATED_AT] = lastMessage[FIREBASE_FIELDS.CREATED_AT];
+                await updateDoc(userChatRef, { [FIREBASE_FIELDS.CHATS]: chats });
+              }
+            }
+          } catch (error) {
+            console.error("Error updating lastMessage:", error);
+          }
+        });
+      }
     });
     return () => unSub();
-  }, [chatId]);
+  }, [chatId, currentUser.uid, user?.id]);
 
   // Add emoji
   const handleEmoji = (e) => {
@@ -41,15 +67,18 @@ const Chat = ({ onToggleDetail }) => {
 
   // Send message
   const handleSend = async () => {
-    if (text.trim() === "") return;
+    if (text.trim() === "")
+
+      
+      return;
 
     try {
       // 1. Update messages in chats collection
-      await updateDoc(doc(db, "chats", chatId), {
-        messages: arrayUnion({
-          senderId: currentUser.uid,
-          text,
-          createdAt: Date.now(),
+      await updateDoc(doc(db, FIREBASE_COLLECTIONS.CHATS, chatId), {
+        [FIREBASE_FIELDS.MESSAGES]: arrayUnion({
+          [FIREBASE_FIELDS.SENDER_ID]: currentUser.uid,
+          [FIREBASE_FIELDS.TEXT]: text,
+          [FIREBASE_FIELDS.CREATED_AT]: Date.now(),
         }),
       });
 
@@ -57,32 +86,32 @@ const Chat = ({ onToggleDetail }) => {
       const userIds = [currentUser.uid, user.id];
 
       userIds.forEach(async (id) => {
-        const userChatRef = doc(db, "userChats", id);
+        const userChatRef = doc(db, FIREBASE_COLLECTIONS.USER_CHATS, id);
         const userChatsSnapshot = await getDoc(userChatRef);
 
         if (userChatsSnapshot.exists()) {
           const userChatData = userChatsSnapshot.data();
-          const chats = userChatData.chats || [];
+          const chats = userChatData[FIREBASE_FIELDS.CHATS] || [];
 
-          const chatIndex = chats.findIndex((c) => c.chatId === chatId);
+          const chatIndex = chats.findIndex((c) => c[FIREBASE_FIELDS.CHAT_ID] === chatId);
 
           if (chatIndex !== -1) {
             // Update existing chat
-            chats[chatIndex].lastMessage = text;
-            chats[chatIndex].isSeen = id === currentUser.uid ? true : false;
-            chats[chatIndex].updatedAt = Date.now();
+            chats[chatIndex][FIREBASE_FIELDS.LAST_MESSAGE] = text;
+            chats[chatIndex][FIREBASE_FIELDS.IS_SEEN] = id === currentUser.uid ? true : false;
+            chats[chatIndex][FIREBASE_FIELDS.UPDATED_AT] = Date.now();
           } else {
             // Create new chat entry
             chats.push({
-              chatId,
-              lastMessage: text,
-              isSeen: id === currentUser.uid,
-              updatedAt: Date.now(),
-              receiverId: id === currentUser.uid ? user.id : currentUser.uid, // ✅ consistent
+              [FIREBASE_FIELDS.CHAT_ID]: chatId,
+              [FIREBASE_FIELDS.LAST_MESSAGE]: text,
+              [FIREBASE_FIELDS.IS_SEEN]: id === currentUser.uid,
+              [FIREBASE_FIELDS.UPDATED_AT]: Date.now(),
+              [FIREBASE_FIELDS.RECEIVER_ID]: id === currentUser.uid ? user.id : currentUser.uid,
             });
           }
 
-          await updateDoc(userChatRef, { chats });
+          await updateDoc(userChatRef, { [FIREBASE_FIELDS.CHATS]: chats });
         }
       });
 
@@ -102,6 +131,7 @@ const Chat = ({ onToggleDetail }) => {
             <span>{user?.username || "Unknown User"}</span>
             <p>Lorem ipsum dolor sit amet.
             </p>
+          
           </div>
         </div>
        
@@ -109,16 +139,16 @@ const Chat = ({ onToggleDetail }) => {
 
       {/* Messages */}
       <div className="center">
-        {chat?.messages?.map((message) => (
+        {chat?.[FIREBASE_FIELDS.MESSAGES]?.map((message) => (
           <div
             className={`message ${
-              message.senderId === currentUser.uid ? "own" : ""
+              message[FIREBASE_FIELDS.SENDER_ID] === currentUser.uid ? "own" : ""
             }`}
-            key={message.createdAt}
+            key={message[FIREBASE_FIELDS.CREATED_AT]}
           >
             <div className="text">
               {message.img && <img src={message.img} alt="attachment" />}
-              <p>{message.text}</p>
+              <p>{message[FIREBASE_FIELDS.TEXT]}</p>
             </div>
           </div>
         ))}

@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { doc, getDoc } from 'firebase/firestore'
-import { db } from './firbase'
+import { db, FIREBASE_FIELDS } from './firbase'
 import { useUserStore } from './userStore'
 
 export const useChatStore = create((set) => ({
@@ -12,7 +12,7 @@ export const useChatStore = create((set) => ({
     const currentUser = useUserStore.getState().currentUser
 
     // CHECK IF THE USER IS BLOCKED
-    if (user?.blocked?.includes(currentUser?.uid)) {
+    if (user?.[FIREBASE_FIELDS.BLOCKED]?.includes(currentUser?.uid)) {
       
         return set( {
             chatId,
@@ -21,7 +21,7 @@ export const useChatStore = create((set) => ({
             isReceiverBlocked: false,})
     }
      // CHECK IF THE RECIEVER IS BLOCKED
-     else if (currentUser?.blocked?.includes(user?.uid)) {
+     else if (currentUser?.[FIREBASE_FIELDS.BLOCKED]?.includes(user?.uid)) {
         return set( {
             chatId,
             user: user,

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import './login.css'
 import { toast } from 'react-toastify';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
-import { auth, db } from '../../lib/firbase';
+import { auth, db, FIREBASE_COLLECTIONS, FIREBASE_FIELDS } from '../../lib/firbase';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 
 const Login =()=>
@@ -25,17 +25,17 @@ const Login =()=>
            
             const uid = cred.user?.uid
             if (uid) {
-                const userRef = doc(db, 'users', uid)
+                const userRef = doc(db, FIREBASE_COLLECTIONS.USERS, uid)
                 const snap = await getDoc(userRef)
                 if (!snap.exists()) {
                     await setDoc(userRef, {
-                        username: email.split('@')[0],
-                        email,
-                        avatar: '',
-                        uid,
-                        blocked: [],
+                        [FIREBASE_FIELDS.USERNAME]: email.split('@')[0],
+                        [FIREBASE_FIELDS.EMAIL]: email,
+                        [FIREBASE_FIELDS.AVATAR]: '',
+                        [FIREBASE_FIELDS.UID]: uid,
+                        [FIREBASE_FIELDS.BLOCKED]: [],
                     })
-                    await setDoc(doc(db, 'userschats', uid), { chats: [] })
+                    await setDoc(doc(db, FIREBASE_COLLECTIONS.USER_CHATS, uid), { [FIREBASE_FIELDS.CHATS]: [] })
                 }
             }
             toast.success('Login successful!')
@@ -53,15 +53,15 @@ const Login =()=>
         const {username,email,password}= Object.fromEntries(formData);
         try{
             const userCredential= await createUserWithEmailAndPassword(auth,email,password)
-            await setDoc(doc(db, 'users', userCredential.user.uid), {
-                username: username,
-                email: email,
-                avatar: avtar.url || '',
-                uid: userCredential.user.uid,
-                blocked:[],
+            await setDoc(doc(db, FIREBASE_COLLECTIONS.USERS, userCredential.user.uid), {
+                [FIREBASE_FIELDS.USERNAME]: username,
+                [FIREBASE_FIELDS.EMAIL]: email,
+                [FIREBASE_FIELDS.AVATAR]: avtar.url || '',
+                [FIREBASE_FIELDS.UID]: userCredential.user.uid,
+                [FIREBASE_FIELDS.BLOCKED]:[],
             });
-            await setDoc(doc(db, 'userschats', userCredential.user.uid), {
-               chats:[],
+            await setDoc(doc(db, FIREBASE_COLLECTIONS.USER_CHATS, userCredential.user.uid), {
+               [FIREBASE_FIELDS.CHATS]:[],
             });
             
          

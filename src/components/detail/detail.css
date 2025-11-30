@@ -26,23 +26,7 @@ flex: 1;
         font-size: 20px;
         font-weight: 500;
        }
-    .logout{
-        color: aliceblue;
-    
-        position: absolute;
-        align-self: flex-end; 
-       font-size: 25px;
-       font-weight: 200;
-        padding: 3px 3px;
-        border-radius: 30%;
-  
-        background-color: #1E3A8A;
-        box-shadow: 0 4px 12px rgba(252, 129, 129, 0.3);
-
-        &:hover {
-            box-shadow: 0 6px 16px rgba(252, 129, 129, 0.4);
-        }
-    }
+   
    
    }
    .info{

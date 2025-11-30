@@ -1,10 +1,8 @@
 import "./detail.css";
-import { auth, db } from "../../lib/firbase";
-import { signOut } from "firebase/auth";
-
+import { db, FIREBASE_COLLECTIONS, FIREBASE_FIELDS } from "../../lib/firbase";
 import { useChatStore } from "../../lib/chatStore";
 import { useUserStore } from "../../lib/userStore";
-import { IoIosLogOut } from "react-icons/io";
+
 
 import { 
     doc, 
@@ -15,19 +13,18 @@ import {
 
 const Detail = () => {
 
-    const { chatId, user, isCurrentUserBlocked, isReceiverBlocked, changeBlock } =
-        useChatStore();
+    const { chatId, user, isCurrentUserBlocked, isReceiverBlocked, changeBlock } = useChatStore();
 
     const { currentUser, fetchUserInfo } = useUserStore();
 
     const handleBlock = async () => {
         if (!user || !currentUser || isCurrentUserBlocked) return;
 
-        const userRef = doc(db, "users", currentUser.uid);
+        const userRef = doc(db, FIREBASE_COLLECTIONS.USERS, currentUser.uid);
 
         try {
             await updateDoc(userRef, {
-                blocked: isReceiverBlocked
+                [FIREBASE_FIELDS.BLOCKED]: isReceiverBlocked
                     ? arrayRemove(user.uid)
                     : arrayUnion(user.uid)
             });
@@ -44,13 +41,10 @@ const Detail = () => {
         <div className="detail">
             <div className="user">
 
-                <img src={user?.avatar || "./avtar.png"} alt="" />
-                <h2>{user?.username}</h2>
+                <img src={user?.[FIREBASE_FIELDS.AVATAR] || "./avtar.png"} alt="" />
+                <h2>{user?.[FIREBASE_FIELDS.USERNAME]}</h2>
               
-                <button className="logout" onClick={() => signOut(auth)}>
-                <IoIosLogOut />
-
-                </button>
+           
                 <p>Lorem ipsum dolor sit amet ectetur adipisicing elit.</p>
             </div>
            

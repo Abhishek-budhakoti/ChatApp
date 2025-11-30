@@ -43,30 +43,40 @@
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 
 
+
 }
-body
-{
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+body {
     background: var(--bg-color);
     background-attachment: fixed;
     display: flex;
     align-items: center;
-    justify-content: center; 
+    justify-content: center;
+    width: 100vw;
     height: 100vh;
     color: var(--text-color);
-    min-height: 100vh;
-}
-.container
-{
-    display: flex;
-    width: 180vh;
-    height: 90vh;
-    background-color: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px) saturate(180%);
-    border-radius: 20px;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 20px 60px #667eea4d;
+    overflow: hidden;
 }
 
+.container {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    max-width: 100vw;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px) saturate(180%);
+    border-radius: 0;
+    border: none;
+    box-shadow: 0 20px 60px #667eea4d;
+}
 .loading{
 
     font-size: 36px;
